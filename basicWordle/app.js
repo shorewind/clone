@@ -191,29 +191,9 @@ const showMessageTemp = (message) => {
 
 const showMessagePerm = (message) => {
     const messageElement = document.createElement('p')
-    messageElement.textContent = message
-    messageDisplay.append(messageElement)
-}
-
-
-const showMessage = (message) => {
-    const messageElement = document.createElement('p')
-    messageElement.textContent = message
-    messageDisplay.append(messageElement)
-
-    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
-}
-
-
-const showPopUp = (message) =>{
-    const messageElement = document.createElement('p')
     messageElement.innerHTML = message
-    //messageElement.
     messageDisplay.append(messageElement)
-    
-    //messageDisplay.
-
-} 
+}
 
 const checkRow = () => {
     const guess = guessRows[currentRow].join('') /* guess into single string */
@@ -233,7 +213,6 @@ const checkRow = () => {
                     console.log('guess is ' + guess, 'wordle is ' + wordle)
                     flipTile()
                     if (wordle == guess) {
-                         showMessage('Magnificent!')
                         isGameOver = true
                         fetch(`http://localhost:8000/def/?word=${wordle}`)
                         .then(response => response.json())
@@ -274,11 +253,10 @@ const checkRow = () => {
                             currentString = currentString + loopJSON(adverbVector) + "<br>"
                 
                         }
-
+                        showMessageTemp('Spectacular!')
                         setTimeout(function(){
-                            showPopUp(currentString)
-                        }, 2500)
-                       // showPopUp(currentString)
+                            showMessagePerm(currentString)
+                        }, 3000)
                 
                     })
 
@@ -287,12 +265,11 @@ const checkRow = () => {
                     else {
                         if (currentRow >= 5) {
                             isGameOver = true
-                            showMessage('Game Over')
                             fetch(`http://localhost:8000/def/?word=${wordle}`)
-                        .then(response => response.json())
-                        .then(json => {
-                        console.log(json)
-                        //const definition = JSON.stringify(json, null, 2);
+                            .then(response => response.json())
+                            .then(json => {
+                            console.log(json)
+                            //const definition = JSON.stringify(json, null, 2);
                         var currentString = "<b>" + wordle + "</b>" + "<br>"+ "<br>"
                 
                 
@@ -327,11 +304,10 @@ const checkRow = () => {
                             currentString = currentString + loopJSON(adverbVector) + "<br>"
                 
                         }
-
+                        showMessageTemp('Game Over')
                         setTimeout(function(){
-                            showPopUp(currentString)
-                        }, 2500)
-                       // showPopUp(currentString)
+                            showMessagePerm(currentString)
+                        }, 3000)
                 
                     })
                             return
