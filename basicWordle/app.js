@@ -44,7 +44,7 @@ const keys = [
     'B',
     'N',
     'M',
-    '«',
+    'DEL',
 ]
 
 let currentRow = 0
@@ -83,7 +83,7 @@ keys.forEach(key => {
 const handleClick = (letter) => {
     if (!isGameOver) {
         console.log('clicked', letter)
-        if (letter === '«') {
+        if (letter === 'DEL') {
             deleteLetter()
             console.log('guessRows', guessRows)
             return
@@ -116,47 +116,6 @@ const deleteLetter = () => {
         guessRows[currentRow][currentTile] = ''
         tile.setAttribute('data', '')
     }
-}
-
-const checkRow = () => {
-    const guess = guessRows[currentRow].join('') /* guess into single string */
-    console.log('guess', guess)
-    if (currentTile > 4) {
-        fetch(`http://localhost:8000/check/?word=${guess}`)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json)
-                if (json == 'Entry word not found') {
-                    showMessage('word not in list')
-                    return  
-                } else {
-                    console.log('guess is ' + guess, 'wordle is ' + wordle)
-                    flipTile()
-                    if (wordle == guess) {
-                        showMessage('Magnificent!')
-                        isGameOver = true
-                        return
-                    } else {
-                        if (currentRow >= 5) {
-                            isGameOver = true
-                            showMessage('Game Over')
-                            return
-                        }
-                        if (currentRow < 5) {
-                            currentRow++
-                            currentTile = 0
-                        }
-                    }
-                }
-            }).catch(err => console.log(err))
-    }
-}
-
-const showMessage = (message) => {
-    const messageElement = document.createElement('p')
-    messageElement.textContent = message
-    messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
 
 const addColorToKey = (keyLetter, color) => {
@@ -192,19 +151,75 @@ const flipTile = () => {
 
         setTimeout(() => {
             tile.classList.add('flip')
-/*             if (dataLetter  == wordle[index]) {
-                tile.classList.add('green-overlay')
-                addColorToKey(dataLetter, 'green-overlay')
-            } else if (wordle.includes(dataLetter)) {
-                tile.classList.add('yellow-overlay')
-                addColorToKey(dataLetter, 'yellow-overlay')
-            } else {
-                tile.classList.add('grey-overlay')
-                addColorToKey(dataLetter, 'grey-overlay')
-            } */
             tile.classList.add(guess[index].color)
             addColorToKey(guess[index].letter, guess[index].color)
         }, 500 * index)
 
     })
 }
+
+const showMessage = (message) => {
+    const messageElement = document.createElement('p')
+    messageElement.textContent = message
+    messageDisplay.append(messageElement)
+    // setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+}
+
+const checkRow = () => {
+    const guess = guessRows[currentRow].join('') /* guess into single string */
+    console.log('guess', guess)
+    if (currentTile > 4) {
+        fetch(`http://localhost:8000/check/?word=${guess}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json)
+                if (json == 'Entry word not found') {
+                    showMessage('word not in list')
+                    return  
+                } else {
+                    console.log('guess is ' + guess, 'wordle is ' + wordle)
+                    flipTile()
+                    if (wordle == guess) {
+                        // showMessage('Magnificent!')
+                        isGameOver = true
+                        fetch(`http://localhost:8000/def/?word=${wordle}`)
+                            .then(response => response.json())
+                            .then(json => {
+                            console.log(json)
+                            const definition = JSON.stringify(json, null, 2);
+                            showMessage(wordle + ': ' + definition)
+                            })
+                        return
+                    }
+                    else {
+                        if (currentRow >= 5) {
+                            isGameOver = true
+                            // showMessage('Game Over')
+                            fetch(`http://localhost:8000/def/?word=${wordle}`)
+                                .then(response => response.json())
+                                .then(json => {
+                                console.log(json)
+                                const definition = JSON.stringify(json, null, 2);
+                                showMessage(wordle + ': ' + definition)
+                            })
+                            return
+                        }
+                        if (currentRow < 5) {
+                            currentRow++
+                            currentTile = 0
+                        }
+                    }
+                }
+            }).catch(err => console.log(err))
+    }
+}
+/* 
+if (isGameOver == true) {
+    fetch(`http://localhost:8000/def/?word=${wordle}`)
+        .then(response => response.json())
+        .then(json => {
+        console.log(json)
+        const definition = JSON.stringify(json, null, 2);
+        showMessage(definition)
+        })
+} */
