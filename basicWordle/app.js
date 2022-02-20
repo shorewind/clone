@@ -287,10 +287,53 @@ const checkRow = () => {
                     else {
                         if (currentRow >= 5) {
                             isGameOver = true
-                            // showMessage('Game Over')
-                            resultString = resultString + parseJSON()
-                            showMessage(resultString)
+                            showMessage('Game Over')
+                            fetch(`http://localhost:8000/def/?word=${wordle}`)
+                        .then(response => response.json())
+                        .then(json => {
+                        console.log(json)
+                        //const definition = JSON.stringify(json, null, 2);
+                        var currentString = "<b>" + wordle + "</b>" + "<br>"+ "<br>"
+                
+                
+                        if (json.verb.localeCompare("") != 0){
+                            var verb = json.verb
+                            const verbVector = verb.split("(vrb)")
+                            currentString = currentString + "<b> Verb: </b>"
 
+                            currentString = currentString + loopJSON(verbVector) +  "<br>"
+                
+                        }
+                        if (json.noun.localeCompare("") != 0){
+                            var noun = json.noun
+                            const nounVector = noun.split("(nou)")
+                            currentString = currentString + "<b> Noun: </b>"
+
+                            currentString = currentString + loopJSON(nounVector)+  "<br>"
+                        }
+                        if (json.adjective.localeCompare("")!= 0){
+                            var adjective = json.adjective
+                            const adjectiveVector = adjective.split("(adj)")
+                            currentString = currentString + "<b> Adjective: </b>"
+
+                            currentString = currentString + loopJSON(adjectiveVector)+  "<br>"
+                
+                        }
+                        if (json.adverb.localeCompare("") != 0){
+                            var adverb = json.adverb
+                            const adverbVector = adverb.split("(adv)")
+                            currentString = currentString + "<b> Adverb: </b>"
+
+                            currentString = currentString + loopJSON(adverbVector) + "<br>"
+                
+                        }
+
+                        setTimeout(function(){
+                            showPopUp(currentString)
+                        }, 2500)
+                       // showPopUp(currentString)
+                
+                    })
                             return
                         }
                         if (currentRow < 5) {
