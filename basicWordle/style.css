@@ -104,8 +104,13 @@ body {
 
 .message-container {
     height: 30px !important;
+    z-index : 10;
 /*     z-index: -1;
     position: relative; */
+    transition-property: background-color; 
+    transition-timing-function: ease-in-out;
+    transition-duration: 3s;
+
 }
 
 .message-container p {
@@ -113,4 +118,15 @@ body {
     border-radius: 10px;
     padding: 10px;
     margin: 0;  /* customize pop up message */
+    transition-property: background-color; 
+    transition-timing-function: ease-in-out;
+    transition-duration: 3s;
+
+}
+
+.transform-state {
+    background-color: #818384;
+    transition-property: background-color; 
+    transition-timing-function: ease-in-out;
+    transition-duration: 3s;
 }
