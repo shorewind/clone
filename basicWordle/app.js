@@ -1,3 +1,5 @@
+
+
 const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
@@ -19,7 +21,7 @@ const hintClick = () => {
             }
             else {
                 console.log('hint is', json)
-                showMessageTemp('Hint: ' + json)
+                showMessageTemp('The word is associated with ' + json)
             }
         })
     .catch(err => console.log(err))
@@ -95,6 +97,23 @@ guessRows.forEach((guessRow, guessRowIndex) => {
     })
     tileDisplay.append(rowElement)
 })
+
+/*
+
+const checkKeyPress = (key) =>{
+    if(key.keyCode == 13){
+        handleClick('ENTER')
+    }
+    else if(key.keyCode == 8){
+        handleClick('DEL')
+
+    }
+    else if(key.keyCode >= 65 && key.keyCode <= 90 ){
+        handleClick(key.toUpperCase)
+    }
+}
+*/
+
 
 keys.forEach(key => {
     const buttonElement = document.createElement('button')
