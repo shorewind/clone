@@ -1,6 +1,6 @@
 * {
     color: #ffffff;
-    font-family: 'Trbuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
     'Lucida Sans', Arial, sans-serif;
 }
 
@@ -24,7 +24,7 @@ body {
 
 .tile-container {
     width: 330px;
-    margin-bottom: 30px;
+    margin: 30px;
 }
 
 .key-container {
@@ -40,7 +40,10 @@ body {
     border: none;
     background-color: #818384;
     color: #ffffff;
-    margin: 4px;
+    font-weight: bold;
+    margin: 3px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .key-container button:nth-child(11) {
@@ -51,7 +54,6 @@ body {
 .key-container button:nth-child(28) {
     width: 68px;
 }
-
 
 .tile-container div {
     display: flex; /* columns next to each other instead of stacked */
@@ -66,18 +68,8 @@ body {
     justify-content: center;
     align-items: center; /* center anything in tiles */
     color: #ffffff;
+    font-weight: bold;
     margin: 2px;
-}
-
-.message-container {
-    height: 30px;
-}
-
-.message-container p {
-    background-color: #818384;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 0;  /* customize pop up message */
 }
 
 .tile.flip {
@@ -108,4 +100,17 @@ body {
 .green-overlay {
     background-color: #538d4e !important;
     border: none !important; /* order is important */
+}
+
+.message-container {
+    height: 30px !important;
+/*     z-index: -1;
+    position: relative; */
+}
+
+.message-container p {
+    background-color: #818384;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0;  /* customize pop up message */
 }
