@@ -12,8 +12,8 @@ In order to run this project you will need to subscribe to Random Words API and 
   - Random Words API: https://rapidapi.com/sheharyar566/api/random-words5/
   - Word Dictionary API: https://rapidapi.com/twinword/api/word-dictionary/
   
-  Change your RAPID_API_KEY in the index.js file accordingly.
+  Change your RAPID_API_KEY in the .env file accordingly.
   
-Additionally, you will have to run the line "npm run start:backend" in the terminal to start running on localhost port.
+Additionally, you will have to run the line `npm run start:backend` in the terminal to start running on localhost port.
  
 You should be all set!
