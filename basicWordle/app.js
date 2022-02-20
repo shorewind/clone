@@ -44,7 +44,7 @@ const keys = [
     'B',
     'N',
     'M',
-    '«',
+    'DEL',
 ]
 
 let currentRow = 0
@@ -68,7 +68,7 @@ guessRows.forEach((guessRow, guessRowIndex) => {
         tileElement.setAttribute('id', 'guessRow-' + guessRowIndex + '-tile-' + guessIndex)
         tileElement.classList.add('tile')
         rowElement.append(tileElement)
-    }) 
+    })
     tileDisplay.append(rowElement)
 })
 
@@ -83,7 +83,7 @@ keys.forEach(key => {
 const handleClick = (letter) => {
     if (!isGameOver) {
         console.log('clicked', letter)
-        if (letter === '«') {
+        if (letter === 'DEL') {
             deleteLetter()
             console.log('guessRows', guessRows)
             return
@@ -116,47 +116,6 @@ const deleteLetter = () => {
         guessRows[currentRow][currentTile] = ''
         tile.setAttribute('data', '')
     }
-}
-
-const checkRow = () => {
-    const guess = guessRows[currentRow].join('') /* guess into single string */
-    console.log('guess', guess)
-    if (currentTile > 4) {
-        fetch(`http://localhost:8000/check/?word=${guess}`)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json)
-                if (json == 'Entry word not found') {
-                    showMessage('word not in list')
-                    return  
-                } else {
-                    console.log('guess is ' + guess, 'wordle is ' + wordle)
-                    flipTile()
-                    if (wordle == guess) {
-                        showMessage('Magnificent!')
-                        isGameOver = true
-                        return
-                    } else {
-                        if (currentRow >= 5) {
-                            isGameOver = true
-                            showMessage('Game Over')
-                            return
-                        }
-                        if (currentRow < 5) {
-                            currentRow++
-                            currentTile = 0
-                        }
-                    }
-                }
-            }).catch(err => console.log(err))
-    }
-}
-
-const showMessage = (message) => {
-    const messageElement = document.createElement('p')
-    messageElement.textContent = message
-    messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
 
 const addColorToKey = (keyLetter, color) => {
@@ -192,19 +151,187 @@ const flipTile = () => {
 
         setTimeout(() => {
             tile.classList.add('flip')
-/*             if (dataLetter  == wordle[index]) {
-                tile.classList.add('green-overlay')
-                addColorToKey(dataLetter, 'green-overlay')
-            } else if (wordle.includes(dataLetter)) {
-                tile.classList.add('yellow-overlay')
-                addColorToKey(dataLetter, 'yellow-overlay')
-            } else {
-                tile.classList.add('grey-overlay')
-                addColorToKey(dataLetter, 'grey-overlay')
-            } */
             tile.classList.add(guess[index].color)
             addColorToKey(guess[index].letter, guess[index].color)
         }, 500 * index)
 
     })
+}
+
+const showMessage = (message) => {
+    const messageElement = document.createElement('p')
+    messageElement.textContent = message
+    messageDisplay.append(messageElement)
+
+    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+}
+
+
+const showPopUp = (message) =>{
+    const messageElement = document.createElement('p')
+    messageElement.innerHTML = message
+    //messageElement.
+    messageDisplay.append(messageElement)
+    
+    //messageDisplay.
+
+} 
+
+const checkRow = () => {
+    const guess = guessRows[currentRow].join('') /* guess into single string */
+    console.log('guess', guess)
+    if (currentTile > 4) {
+        fetch(`http://localhost:8000/check/?word=${guess}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json)
+                var resultString =""
+
+                if (json == 'Entry word not found') {
+                    showMessage('word not in list')
+                    return
+                }
+                else {
+                    console.log('guess is ' + guess, 'wordle is ' + wordle)
+                    flipTile()
+                    if (wordle == guess) {
+                         showMessage('Magnificent!')
+                        isGameOver = true
+                        fetch(`http://localhost:8000/def/?word=${wordle}`)
+                        .then(response => response.json())
+                        .then(json => {
+                        console.log(json)
+                        //const definition = JSON.stringify(json, null, 2);
+                        var currentString = "<b>" + wordle + "</b>" + "<br>"+ "<br>"
+                
+                
+                        if (json.verb.localeCompare("") != 0){
+                            var verb = json.verb
+                            const verbVector = verb.split("(vrb)")
+                            currentString = currentString + "<b> Verb: </b>"
+
+                            currentString = currentString + loopJSON(verbVector) +  "<br>"
+                
+                        }
+                        if (json.noun.localeCompare("") != 0){
+                            var noun = json.noun
+                            const nounVector = noun.split("(nou)")
+                            currentString = currentString + "<b> Noun: </b>"
+
+                            currentString = currentString + loopJSON(nounVector)+  "<br>"
+                        }
+                        if (json.adjective.localeCompare("")!= 0){
+                            var adjective = json.adjective
+                            const adjectiveVector = adjective.split("(adj)")
+                            currentString = currentString + "<b> Adjective: </b>"
+
+                            currentString = currentString + loopJSON(adjectiveVector)+  "<br>"
+                
+                        }
+                        if (json.adverb.localeCompare("") != 0){
+                            var adverb = json.adverb
+                            const adverbVector = adverb.split("(adv)")
+                            currentString = currentString + "<b> Adverb: </b>"
+
+                            currentString = currentString + loopJSON(adverbVector) + "<br>"
+                
+                        }
+
+                        setTimeout(function(){
+                            showPopUp(currentString)
+                        }, 2500)
+                       // showPopUp(currentString)
+                
+                    })
+
+                        return
+                    }
+                    else {
+                        if (currentRow >= 5) {
+                            isGameOver = true
+                            // showMessage('Game Over')
+                            resultString = resultString + parseJSON()
+                            showMessage(resultString)
+
+                            return
+                        }
+                        if (currentRow < 5) {
+                            currentRow++
+                            currentTile = 0
+                        }
+                    }
+                }
+            }).catch(err => console.log(err))
+    }
+}
+/*
+if (isGameOver == true) {
+    fetch(`http://localhost:8000/def/?word=${wordle}`)
+        .then(response => response.json())
+        .then(json => {
+        console.log(json)
+        const definition = JSON.stringify(json, null, 2);
+        showMessage(definition)
+        })
+} */
+
+/* redundant 
+const parseJSON = () => {
+
+    fetch(`http://localhost:8000/def/?word=${wordle}`)
+        .then(response => response.json())
+        .then(json => {
+        console.log(json)
+        //const definition = JSON.stringify(json, null, 2);
+        var currentString = "" 
+
+
+        showMessage(wordle)
+
+        if (json.verb.localeCompare("") != 0){
+            var verb = json.verb
+            const verbVector = verb.split("(vrb)")
+            currentString = currentString + "<b> Verb: </b>"
+            currentString = currentString + loopJSON(verbVector)
+
+        }
+        if (json.noun.localeCompare("") != 0){
+            var noun = json.noun
+            const nounVector = noun.split("(nou)")
+            currentString = currentString + "<b> Noun: </b>"
+            currentString = currentString + loopJSON(nounVector)
+        }
+        if (json.adjective.localeCompare("")!= 0){
+            var adjective = json.adjective
+            const adjectiveVector = adjective.split("(adj)")
+            currentString = currentString + "<b> Adjective: </b>"
+            currentString = currentString + loopJSON(adjectiveVector)
+
+        }
+        if (json.adverb.localeCompare("") != 0){
+            var adverb = json.adverb
+            const adverbVector = adverb.split("(adv)")
+            currentString = currentString + "<b> Adverb: </b>"
+            currentString = currentString + loopJSON(adverbVector)
+
+        }
+        console.log(currentString)
+
+        return currentString
+
+    })
+}
+*/
+const loopJSON = (vector) =>{
+    var currentString = ""
+    for (i = 0 ; i< vector.length; i++){
+        if (i==0){
+            currentString = currentString + vector[i] + "<br>"
+        }
+        else{
+            currentString = currentString + "&nbsp;&nbsp;&nbsp;&nbsp" + "- " + vector[i] + "<br>"
+        }
+    }
+    currentString = currentString + "\n"+ "<br>"
+    return currentString
 }
