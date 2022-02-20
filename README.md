@@ -1,6 +1,7 @@
 # StormHacks_Wordle
 
 This is a project created for StormHacks 2022.
+Checkout our Devpost submission: https://devpost.com/software/wordle
 
 It is a variant of the popular word-guessing game Wordle with two new features aimed towards educating the user about English words, their synonyms, and their meanings.
   1. Added hint button that displays associated word
