@@ -11,7 +11,7 @@ app.get('/word', (req, res) => {
     const options = {
         method: 'GET',
         url: 'https://random-words5.p.rapidapi.com/getMultipleRandom',
-        params: {count: '5', wordLength: '5'},
+        params: {count: '1', wordLength: '5'},
         headers: {
         'x-rapidapi-host': 'random-words5.p.rapidapi.com',
         'x-rapidapi-key': process.env.RAPID_API_KEY
@@ -44,6 +44,28 @@ app.get('/check', (req, res) => {
       }).catch((error) => {
           console.error(error)
       })
+})
+
+app.get('/def', (req, res) => {
+    const word = req.query.word
+
+    const options = {
+        method: 'GET',
+        url: 'https://twinword-word-graph-dictionary.p.rapidapi.com/definition/',
+        params: {entry: word},
+        headers: {
+          'x-rapidapi-host': 'twinword-word-graph-dictionary.p.rapidapi.com',
+          'x-rapidapi-key': process.env.RAPID_API_KEY
+        }
+      }
+      
+      axios.request(options).then((response) => {
+          console.log(response.data)
+          res.json(response.data.meaning)
+      }).catch((error) => {
+          console.error(error)
+      })
+    
 })
 
 app.listen(PORT, () => console.log('Server running on port '+ PORT))
