@@ -1,7 +1,5 @@
-
-
 const tileDisplay = document.querySelector('.tile-container')
-const keyboard = document.querySelector('.key-container')
+const keyboardDisplay = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 const hint = document.querySelector('.message-container')
 
@@ -26,7 +24,6 @@ const hintClick = () => {
         })
     .catch(err => console.log(err))
 }
-
 
 let wordle
 
@@ -70,7 +67,7 @@ const keys = [
     'B',
     'N',
     'M',
-    'DEL',
+    'DEL'
 ]
 
 let currentRow = 0
@@ -98,29 +95,25 @@ guessRows.forEach((guessRow, guessRowIndex) => {
     tileDisplay.append(rowElement)
 })
 
-/*
-
-const checkKeyPress = (key) =>{
-    if(key.keyCode == 13){
-        handleClick('ENTER')
-    }
-    else if(key.keyCode == 8){
-        handleClick('DEL')
-
-    }
-    else if(key.keyCode >= 65 && key.keyCode <= 90 ){
-        handleClick(key.toUpperCase)
-    }
-}
-*/
-
+// const checkKeyPress = (key) =>{
+//     if(key.keyCode == 13){
+//         handleClick('ENTER')
+//     }
+//     else if(key.keyCode == 8){
+//         handleClick('DEL')
+//
+//     }
+//     else if(key.keyCode >= 65 && key.keyCode <= 90 ){
+//         handleClick(key.toUpperCase)
+//     }
+// }
 
 keys.forEach(key => {
     const buttonElement = document.createElement('button')
     buttonElement.textContent = key
     buttonElement.setAttribute('id', key)
     buttonElement.addEventListener('click', () => handleClick(key))
-    keyboard.append(buttonElement)
+    keyboardDisplay.append(buttonElement)
 })
 
 const handleClick = (letter) => {
