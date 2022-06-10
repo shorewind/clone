@@ -10,7 +10,7 @@ hintElement.addEventListener('click', () => hintClick('Hint'))
 hint.append(hintElement)
 
 const hintClick = () => {
-    console.log('clicked', 'Hint')
+    // console.log('clicked', 'Hint')
     showMessageTemp('Hints not yet available on GitHub Pages Edition')
 }
 
@@ -21,7 +21,7 @@ let wordle
 const getWordle = () => {
     let word = word_list[Math.floor((Math.random()*word_list.length))];
     wordle = word.toUpperCase()
-    console.log('wordle is', wordle)
+    // console.log('wordle is', wordle)
 }
 
 getWordle()
@@ -106,7 +106,7 @@ window.addEventListener('keydown', function(event) {
 
 const handleClick = (letter) => {
     if (!isGameOver) {
-        console.log('clicked', letter)
+        // console.log('clicked', letter)
         if (letter === 'DEL') {
             deleteLetter()
             return
@@ -200,17 +200,19 @@ const checkRow = () => {
         if (inArray(word_list, lowered_guess) === false) {
             showMessageTemp('Word not in list')
         } else {
-            console.log('guess is ' + guess, 'wordle is ' + wordle)
+            // console.log('guess is ' + guess, 'wordle is ' + wordle)
             flipTile()
             if (wordle === guess) {
                 isGameOver = true
+                // console.log('wordle was guessed')
                 showMessageTemp('Spectacular!')
             }
             else {
                 if (currentRow >= 5) {
                     isGameOver = true
-                    console.log('wordle was not guessed')
+                    // console.log('wordle was not guessed')
                     showMessageTemp('Game Over!')
+                    showMessageTemp(wordle)
                 }
             }
             if (currentRow < 5) {
@@ -221,7 +223,8 @@ const checkRow = () => {
     }
     if (isGameOver === true) {
         setTimeout( () => {
-            showMessagePerm('Click Anywhere to Play Again')
+            showMessageTemp(wordle)
+            showMessagePerm('Click anywhere to play again')
             window.addEventListener('mousedown', function () {
                 window.location.reload()
             })
