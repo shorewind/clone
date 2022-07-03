@@ -29,7 +29,7 @@ body {
     height: 50vh;
     width: auto;
     position: absolute;
-    top: 15vh;
+    top: 18vh;
 }
 
 .key-container {
@@ -48,12 +48,16 @@ body {
     height: 7vh;
     border-radius: 4px;
     border: none;
-    background-color: #818384;
+    background-color: #757575;
     color: #ffffff;
     font-weight: bold;
     margin: 0.4vh;
     cursor: pointer;
     user-select: none;
+}
+
+.key-container button:hover {
+    background-color: #969696;
 }
 
 .key-container button:nth-child(20),
@@ -120,37 +124,38 @@ body {
     }
 }
 .grey-overlay {
-    background-color: #3a3a3c;
-    border: none;
+    background-color: #3a3a3c !important;
+    border: none !important;
 }
 
 .yellow-overlay {
-    background-color: #b59f3a;
-    border: none;
+    background-color: #b59f3a !important;
+    border: none !important;
 }
 
 .green-overlay {
-    background-color: #538d4e;
-    border: none;
+    background-color: #538d4e !important;
+    border: none !important;
 }
 
 .message-container {
     height: 5vh;
     z-index: 1;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .message-container button {
     width: 8vw;
     height: 4vh;
-    min-width: 30px;
-    min-height: 15px;
+    min-width: 38px;
+    min-height: 18px;
     max-width: 75px;
     max-height: 30px;
     border-radius: 4px;
     border: none;
-    background-color: #565657;
+    background-color: #757575;
     color: #ffffff;
     cursor: pointer;
     user-select: none;
@@ -159,10 +164,15 @@ body {
     right: 5vh;
 }
 
+.message-container button:hover {
+    background-color: #969696;
+}
+
 .message-container p {
     background-color: rgba(129, 131, 132, 0.9);
     border-radius: 10px;
     padding: 8px;
     width: fit-content;
-    margin: auto;
+    max-width: 90vw;
+    margin: 1.5vh;
 }
