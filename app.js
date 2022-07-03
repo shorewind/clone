@@ -26,7 +26,7 @@ const hintClick = () => {
     .then(response => response.json())
     .then(result => {
         for (let i = 0; i < result.length; i++) {
-            if (result[i].word.includes(wordle) == false) {
+            if (result[i].word.includes(wordle.toLowerCase()) == false) {
                 hint = result[i].word;
                 if (hint === "" || hint === undefined) {
                     showMessageTemp('No hint available')
