@@ -26,14 +26,14 @@ const hintClick = () => {
     .then(response => response.json())
     .then(result => {
         for (let i = 0; i < result.length; i++) {
-            if (result[i].word.includes(wordle.toLowerCase()) == false) {
-                hint = result[i].word;
+            if (result[i].word.includes(wordle.toLowerCase()) === false) {
+                let hint = result[i].word;
                 if (hint === "" || hint === undefined) {
                     showMessageTemp('No hint available')
                 }
                 else {
                     hint = hint.replace(/['"]+/g, '')
-                    // console.log('hint is', hint)
+                    console.log('hint is', hint)
                     showMessageTemp('The word is associated with ' + hint)
                 }
                 return;
@@ -41,6 +41,7 @@ const hintClick = () => {
         }
     })
     .catch(error => console.log(error))
+    hintElement.blur()
 }
 
 hintElement.addEventListener('click', () => hintClick('Hint'))
@@ -219,17 +220,17 @@ const checkRow = () => {
         if (inArray(word_list, lowered_guess) === false) {
             showMessageTemp('Word not in list')
         } else {
-            // console.log('guess is ' + guess, 'wordle is ' + wordle)
+            console.log('guess is ' + guess, 'wordle is ' + wordle)
             flipTile()
             if (wordle === guess) {
                 isGameOver = true
-                // console.log('wordle was guessed')
+                console.log('wordle was guessed')
                 showMessageTemp('Spectacular!')
             }
             else {
                 if (currentRow >= 5) {
                     isGameOver = true
-                    // console.log('wordle was not guessed')
+                    console.log('wordle was not guessed')
                     showMessageTemp('Game Over!')
                     showMessageTemp(wordle)
                 }
@@ -245,15 +246,15 @@ const checkRow = () => {
             fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordle}`)
             .then(response => response.json())
             .then(result => {
-                definition = JSON.stringify(result[0].meanings[0].definitions[0].definition);
-                pos = JSON.stringify(result[0].meanings[0].partOfSpeech)
+                let definition = JSON.stringify(result[0].meanings[0].definitions[0].definition);
+                let pos = JSON.stringify(result[0].meanings[0].partOfSpeech)
                 if (definition === "" || definition === undefined) {
                     showMessageTemp('No definition available')
                 }
                 else {
-                    def_string = wordle + ' (' + pos + ') : ' + definition
+                    let def_string = wordle + ' (' + pos + ') : ' + definition
                     def_string = def_string.replace(/['"]+/g, '')
-                    // console.log('definition is', definition)
+                    console.log('definition is', definition)
                     showMessagePerm(def_string)
                 }
             })
